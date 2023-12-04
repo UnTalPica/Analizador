@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatas II - Analizador Léxico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgba(65, 63, 63, 0.82);
+            color: #fff;
+            margin: 0;
+            padding-top: 56px;
+        }
+        .navbar {
+            background-color: #8080c8 !important;
+        }
+        .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            color: #fff;
+            margin-left: 20px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ecf0f1;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        h1, p {
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #d60000;
+            border-color: #d60000;
+        }
+        .btn-primary:hover {
+            background-color: #ff0000;
+            border-color: #ff0000;
+        }
+        .error-background {
+            background-color: #fffbcc;
+        }
+
+        #textAreaExample1 {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            font-family: monospace;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">Automatas II</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="semantico.html">Analizador Semántico</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sintactico.html">Analizador Sintáctico</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="lexico.html">Analizador Léxico</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Analizador léxico</h1>
+        <p>Escriba el texto deseado.</p>
+    </div>
+    <div class="container mt-4">
+        <div class="form-outline">
+            <div id="textAreaExample1" contenteditable="true"></div>
+            <label class="form-label" for="textAreaExample">Analizador</label>
+        </div>
+        <button type="button" class="btn btn-primary mt-2" onclick="validarLexico()">Analizar léxico</button>
+    </div>
+
+    <script>
+        var tokens = {
+            NUMERO: /\d+/,
+            SUMA: /\+/,
+            RESTA: /\-/,
+            MULTIPLICACION: /\*/
+        };
+
+        function validarLexico() {
+            var codigoFuente = document.getElementById("textAreaExample1").innerText;
+            var lineas = codigoFuente.split('\n');
+
+            for (var i = 0; i < lineas.length; i++) {
+                var palabras = lineas[i].split(/[ ,<>\t]+/);
+                for (var j = 0; j < palabras.length; j++) {
+                    var palabra = palabras[j];
+                    if (!(palabra in tokens || palabra.match(/\d+/) || palabra === '+' || palabra === '-' || palabra === '*')) {
+                        palabras[j] = '<span class="error-background">' + palabra + '</span>';
+                    }
+                }
+                lineas[i] = palabras.join(' ');
+            }
+
+            document.getElementById("textAreaExample1").innerHTML = lineas.join('<br>');
+            alert("Análisis léxico completado.");
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
